@@ -1,0 +1,121 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" (click)="enableBlock('new')"><i class="fa fa-plus text-primary"></i> New Company </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" (click)="enableBlock('Pending')"><i class="fa fa-cogs text-warning"></i> Pending for Approval </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" (click)="enableBlock('Active')"><i class="fa fa-table text-success"></i> Active Company </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" (click)="enableBlock('Blocked')"><i class="fa fa-times text-danger"></i> Blocked Company </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <div class="row" *ngIf="blockName=='new'">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <p class="text-center text-info">{{msg}}</p>
+           <div class="card">
+             <div class="card-header bg-secondary text-white">New Company</div>
+             <div class="card-body">
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <em>Company Name</em>
+                        <input type="text" class="form-control" [(ngModel)]="company">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <em>Contact Person</em>
+                        <input type="text" class="form-control"  [(ngModel)]="contact">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <em>Company E-Mail Id</em>
+                        <input type="text" class="form-control"  [(ngModel)]="email">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <em>Phone No</em>
+                        <input type="text" class="form-control"  [(ngModel)]="phone">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <em>Mobile No</em>
+                        <input type="text" class="form-control"  [(ngModel)]="mobile">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <em>City Name</em>
+                        <input type="text" class="form-control"  [(ngModel)]="city">
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <em>Company Address</em>
+                        <textarea  class="form-control"  [(ngModel)]="address"></textarea>
+                    </div>
+                 </div>
+             </div>
+             <div class="card-footer text-center">
+                 <button class="btn btn-primary" (click)="save()">Save Company</button>
+             </div>
+            </div>
+        </div><!--8 end here-->
+        <div class="col-md-2"></div>
+    </div>
+     
+    <div class="row" *ngIf="blockName !='new'">
+        <div class="col-md-8">
+            <h3 class="text-center">Company By Status - {{blockName}} -: {{allcompany.length}}</h3>
+        </div>
+        <div class="col-md-4">
+             <input type="text" class="form-control" [(ngModel)]="keyword" placeholder="Search here....">
+        </div>
+        <div class="col-md-12">
+            <p class="text-center" [innerHTML]="msg"></p>
+            <table class="table table-bordered table-sm">
+                <thead class="text-secondary">
+                    <tr>
+                        <th>#Client Id</th>
+                        <th>Company</th>
+                        <th>Contact Person</th>
+                        <th>e-Mail</th>
+                        <th>Phone</th>
+                        <th>Mobile</th>
+                        <th>City</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let row of allcompany | filter:keyword | paginate: { itemsPerPage: 1, currentPage: p }">
+                        <td>{{row.id}}</td>
+                        <td>{{row.company}}</td>
+                        <td>{{row.contactperson}}</td>
+                        <td>{{row.email}}</td>
+                        <td>{{row.phone}}</td>
+                        <td>{{row.mobile}}</td>
+                        <td>{{row.city}}</td>
+                        <td>{{row.address}}</td>
+                        <td>
+                            <select #status1  (change)="updateStatus(status1.value , row.id)">
+								<option value="{{row.status}}" selected='selected'>{{row.status}}</option>
+                                <option value="Blocked">Blocked</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Active">Active</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12 text-center p-3">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div> 
+            </div>
+        </div>
+     </div>
+</div>

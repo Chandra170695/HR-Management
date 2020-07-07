@@ -1,0 +1,112 @@
+<div class="container">
+	<div class="row form-group">
+		<div class="col-md-12">
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link" (click)="enableBlock('new')"><i class="fa fa-plus text-primary"></i> New Job </a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" (click)="enableBlock('Active')"><i class="fa fa-table text-success"></i> Active Jobs </a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" (click)="enableBlock('Closed')"><i class="fa fa-check-circle text-warning"></i> Closed Jobs </a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row" *ngIf="blockName=='new'">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<p class="text-center text-info">{{msg}}</p>
+			<div class="card">
+				<div class="card-header bg-secondary text-white">Post New Requirement</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-12 form-group">
+							<label> Job Title </label>
+							<input type="text" class="form-control" [(ngModel)]="title">
+						</div>
+						
+						<div class="col-md-6 form-group">
+							<label> Select Client </label>
+							<select class="form-control" [(ngModel)]="client">
+								<option *ngFor="let row of allcompany" value="{{row.id}}"> {{row.company}} </option>
+							</select>
+						</div>
+						<div class="col-md-6 form-group">
+							<label> Salary </label>
+							<input type="number" class="form-control" [(ngModel)]="salary">
+						</div>
+						<div class="col-md-4 form-group">
+							<label> Experience </label>
+							<input type="text" class="form-control" [(ngModel)]="exp">
+						</div>
+						<div class="col-md-4 form-group">
+							<label> No of Position </label>
+							<input type="text" class="form-control" [(ngModel)]="position">
+						</div>
+						<div class="col-md-4 form-group">
+							<label> Job Location </label>
+							<input type="text" class="form-control" [(ngModel)]="city">
+						</div>
+						<div class="col-md-12 form-group">
+							<label> Job description </label>
+							<textarea class="form-control" [(ngModel)]="jd"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center">
+					<button class="btn btn-primary" (click)="save()">Save Job</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+	
+	<br>
+	<div class="row" *ngIf="blockName=='Active' || blockName=='Closed'">
+		<div class="col-md-12">
+			<h3 class="text-center">Requirement Status - {{blockName}} -: {{joblist.length}} </h3>
+			<table class="table table-bordered">
+				<thead class="text-secondary">
+					<tr>
+						<th>#Job Id</th>
+						<th>Job Title</th>
+						<th>JD</th>
+						<th>No of Position</th>
+						<th>Salary</th>
+						<th>Experience</th>
+						<th>Location</th>
+						<th>Status</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let row of joblist | filter:keyword | paginate: { itemsPerPage: 10, currentPage: p }">
+						<td>{{row.jobid}}</td>
+						<td>{{row.title}}</td>
+						<td>{{row.jd}}</td>
+						<td>{{row.position}}</td>
+						<td>{{row.salary}}</td>
+						<td>{{row.experience}}</td>
+                        <td>{{row.location}}</td>
+                        <td>
+							<select #status1  (change)="updateStatus(status1.value , row.jobid)">
+								<option value="{{row.status}}" selected='selected'>{{row.status}}</option>
+								<option value="Active">Active</option>
+								<option value="Closed">Closed</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12 text-center p-3">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div> 
+            </div>
+		</div>
+	</div>
+</div>

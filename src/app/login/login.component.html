@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <br>
+            <div class="card">
+                <div class="card-header bg-secondary text-white"> HR Login </div>
+                <div class="card-body">
+                    <p class="text-center text-info">{{msg}}</p>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" [(ngModel)]="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control"  [(ngModel)]="pass">
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-primary" (click)="loginCheck()">Login</button>
+                </div>
+            </div>
+        </div><!--4 end here-->
+        <div class="col-md-4"></div>
+    </div>
+</div>

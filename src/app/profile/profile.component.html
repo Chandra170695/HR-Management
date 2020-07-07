@@ -1,0 +1,143 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link"  (click)="enableBlock('new')"><i class="fa fa-user-plus text-info"></i> New Profile </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"  (click)="enableBlock('In-Process')"><i class="fa fa-users text-primary"></i> Profile in Process </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"  (click)="enableBlock('Waiting-offer')"><i class="fa fa-sync text-warning"></i> Waiting for offer </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"  (click)="enableBlock('Waiting-join')"><i class="fa fa-handshake text-secondary"></i> Waiting to join </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"  (click)="enableBlock('Rejected')"><i class="fa fa-times text-danger"></i> Rejected Profiles </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"  (click)="enableBlock('Joined')"><i class="fa fa-check-circle text-success"></i> Joined </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
+	<div class="row" *ngIf="blockName=='new'">
+		<div class="col-md-2"></div>
+		<div class="col-md-8 border p-3 border-info">
+			<h3 class="text-center">New Profile</h3>
+			<p class="text-center text-danger">{{msg}}</p>
+			<div class="row	form-group">
+				<div class="col-md-6 form-group">
+					<label>Company Name</label>
+					<select class="form-control" #jobclient (click)="getjob(jobclient.value)">
+						<option value="">Choose </option>
+						<option *ngFor="let row of allcompany" value="{{row.id}}"> {{row.company}} </option>
+					</select>
+				</div>
+				<div class="col-md-6 form-group">
+				    <label>For Requirement </label>
+					<select class="form-control" #job>
+						<option value="">Choose </option>
+						<option *ngFor="let row of joblist" value="{{row.jobid}}"> {{row.title}} </option>
+					</select>
+				</div>
+				<div class="col-md-6 form-group">
+					<label>First Name </label>
+					<input type="text" class="form-control" [(ngModel)]="fname">
+				</div>
+				<div class="col-md-6 form-group">
+					<label>Last Name </label>
+					<input type="text" class="form-control"  [(ngModel)]="lname">
+				</div>
+				<div class="col-md-6 form-group">
+					<label>e-Mail </label>
+					<input type="text" class="form-control"  [(ngModel)]="email">
+				</div>
+				<div class="col-md-6 form-group">
+					<label>Mobile No </label>
+					<input type="text" class="form-control"  [(ngModel)]="mobile">
+				</div>
+				<div class="col-md-3 form-group">
+					<label>Experience </label>
+					<div><input type="radio" name="exp"  [(ngModel)]="type" value="exp"> Experience</div>
+					<div><input type="radio" name="exp"  [(ngModel)]="type" value="fresher"> Fresher</div>
+				</div>
+				<div class="col-md-3 form-group">
+					<label>Total Experience </label>
+					<input type="text" class="form-control" [(ngModel)]="exp">  
+				</div>
+				<div class="col-md-3 form-group">
+					<label>CTC </label>
+					<input type="text" class="form-control"  [(ngModel)]="ctc">
+				</div>
+				<div class="col-md-3 form-group">
+					<label>Expected CTC </label>
+					<input type="text" class="form-control"  [(ngModel)]="ectc">
+                </div>
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-primary" (click)="save(jobclient.value,job.value)">Save</button>
+                </div>
+			</div>
+			
+		</div><!--8end here-->
+		<div class="col-md-2"></div>
+	</div>
+    <br>
+    <div class="row" *ngIf="blockName !='new'">
+        <div class="col-md-3">
+            <select class="form-control" [(ngModel)]="companyid" #abc (change)="getprofile(abc.value,blockName)">
+				<option value="">Choose Company </option>
+				<option *ngFor="let row of allcompany" value="{{row.id}}"> {{row.company}} </option>
+            </select>
+        </div>
+        <div class="col-md-9">
+            <h3 class="text-center">Profiles - {{blockName}} -: {{profileList.length}}</h3>
+        </div>
+        <div class="col-md-12">
+			<p class="text-center text-danger">{{msg2}}</p>
+          <table class="table table-bordered table-sm">
+                <thead class="text-white btn-primary">
+                    <tr>
+                        <th># Id No</th>
+                        <th>Resource Name</th>
+                        <th>Mobile</th>
+                        <th>e-Mail</th>
+                        <th>CTC</th>
+                        <th>ECTC</th>
+						<th>Exp</th>
+						<th>Action</th>
+                    </tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let row of profileList">
+						<td>{{row.userid}}</td>
+						<td>{{row.firstname}} {{row.lastname}}</td>
+						<td>{{row.phone}}</td>
+						<td>{{row.email}}</td>
+						<td>{{row.ctc}}</td>
+						<td>{{row.ectc}}</td>
+						<td>{{row.exp}}</td>
+						<td>
+							<select #status1  (change)="updateStatus(status1.value , row.userid)">
+								<option value="">Choose</option>
+								<option value="In-Process">In-Process</option>
+								<option value="Wating-Offer">Wating-Offer</option>
+								<option value="Waiting-join">Waiting-join</option>
+								<option value="Joined">Joined</option>
+								<option value="Rejected">Rejected</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+            </table>
+        </div>
+     </div>
+</div>

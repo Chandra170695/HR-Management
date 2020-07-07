@@ -1,0 +1,120 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link" (click)="enableBlock('new')"><i class="fa fa-plus"></i> New Invoice </a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" (click)="enableBlock('Pending')"><i class="fa fa-table"></i> Pending Invoice </a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" (click)="enableBlock('Paid')"><i class="fa fa-check"></i> Paid Invoice </a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<p class="text-center text-info">{{msg2}}</p>
+	
+	<div class="row" *ngIf="blockName=='new'">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<h3 class="text-center">Generate Invoice</h3>
+			  <div class="row">
+				<div class="col-md-6 form-group">
+					<label>Company Name</label>
+					<select class="form-control" [(ngModel)]="companyid" #jobclient (change)="getprofile(jobclient.value)">
+						<option value="">Choose </option>
+						<option *ngFor="let row of allcompany" value="{{row.id}}"> {{row.company}} </option>
+					</select>
+				</div>
+				<div class="col-md-6 form-group">
+				    <label>Select Employee </label>
+					<select class="form-control" [(ngModel)]="userid" #empid (change)="processdata(empid.value)">
+						<option value="">Choose </option>
+						<option *ngFor="let row of profileList; let i=index" value="{{i}}"> {{row.firstname}} {{row.lastname}}</option>
+					</select>
+				</div>
+				
+				<div class="col-md-3 form-group">
+					<label>Total Experience </label>
+					<input type="text" class="form-control" [(ngModel)]="exp">
+				</div>
+				<div class="col-md-3 form-group">
+					<label>Old CTC </label>
+					<input type="text" class="form-control" [(ngModel)]="ctc">
+				</div>
+				<div class="col-md-3 form-group">
+					<label>New CTC </label>
+					<input type="text" class="form-control" (keyup)="changeprocess()" [(ngModel)]="ectc">
+				</div>
+				
+				<div class="col-md-3 form-group">
+					<label>Billing Amount </label>
+					<input type="text" class="form-control" [(ngModel)]="amount">
+				</div>
+				
+				<div class="col-md-12 form-group text-center">
+					<button class="btn btn-danger" (click)="save()">Generate Bill</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+	
+	<br>
+	<div class="row" *ngIf="blockName=='Pending' || blockName=='Paid'">
+		<div class="col-md-3 form-group">
+			<select class="form-control" #myclient [(ngModel)]="billclient" (change)="getbill(myclient.value)">
+				<option value="">Choose </option>
+				<option *ngFor="let row of allcompany" value="{{row.id}}"> {{row.company}} </option>
+			</select>
+		</div>
+		<div class="col-md-9 form-group">
+			<h3 class="text-left">Invoices - {{blockName}} -: {{emplist.length}}</h3>
+		</div>
+		<div class="col-md-12">
+			<table class="table table-bordered table-sm">
+				<thead class="text-white btn-primary">
+					<tr>
+						<th>#invoice No</th>
+						<th>Employee Name</th>
+						<th>Email</th>
+						<th>Mobile</th>
+						<th>CTC</th>
+						<th>Billing date</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let row of emplist">
+						<td>{{row.empid}}</td>
+						<td>{{row.name}}</td>
+						<td>{{row.email}}</td>
+						<td>{{row.mobile}}</td>
+						<td>{{row.ctc}}</td>
+						<td>{{row.generateddate}}</td>
+						<td>
+							<select #status1>
+							    <option value="">Choose</option>
+								<option value="Pending">Pending</option>
+								<option value="Paid">Paid</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+</div>
+
+
+
+
+
+
+
